@@ -1,11 +1,12 @@
 from langchain_core.prompts import PromptTemplate
 from langchain_openai import ChatOpenAI
-from dotenv import load_dotenv
-import os
-
+from langchain_ollama import ChatOllama
+from dotenv import load_dotenv, dotenv_values
+from langchain_core.output_parsers import StrOutputParser
 
 if __name__ == "__main__":
     load_dotenv()
+    config = dotenv_values(".env")
 
     print("Hello, World!")
 
@@ -32,12 +33,13 @@ if __name__ == "__main__":
     )
 
     # Obtém a chave da API
-    api_key = os.getenv("OPENAI_API_KEY")
+    api_key = config.get("OPENAI_API_KEY")
 
     # Inicializa o modelo da OpenAI
-    llm = ChatOpenAI(temperature=0, model_name="gpt-3.5-turbo", api_key=api_key)
+    # llm = ChatOpenAI(temperature=0, model_name="gpt-3.5-turbo", api_key=api_key)
+    llm = ChatOllama(model="llama3.2:latest")
 
-    chain = summary_prompt_template | llm
+    chain = summary_prompt_template | llm | StrOutputParser()
 
     res = chain.invoke(input={"information": information})
 
