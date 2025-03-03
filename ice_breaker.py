@@ -37,7 +37,8 @@ if __name__ == "__main__":
 
     # Inicializa o modelo da OpenAI
     # llm = ChatOpenAI(temperature=0, model_name="gpt-3.5-turbo", api_key=api_key)
-    llm = ChatOllama(model="llama3.2:latest")
+    llm = ChatOllama(model="llama3.2")
+    # llm = ChatOllama(model="mistral")
 
     chain = summary_prompt_template | llm | StrOutputParser()
 
